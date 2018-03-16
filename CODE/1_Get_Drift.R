@@ -4,7 +4,7 @@
 #  
 ###############################################################################
 # library(devtools)
-# install_github(repo='jmuehlbauer-usgs/R-packages',subdir='foodbase')
+# install_github(repo = 'jmuehlbauer-usgs/R-packages', subdir = 'foodbase')
 
 rm(list = ls(all = TRUE))
 library(foodbase)
@@ -26,10 +26,11 @@ all.dat.2 = all.dat[which(all.dat$TripID %in% NO_trips),]
 # only the standard gear (don't need this)
 # all.dat.3 = all.dat.2[which(all.dat.2$GearID == 4),]
 
+# dat = sampspec(samp = all.dat.2, stats = TRUE)
 dat = sampspec(samp = all.dat.2)
 
 #------------------
-keep.samp = c("BarcodeID", "TripID", "Date", "RiverMile", "DepthTotal", "DepthSample",
+keep.samp = c("BarcodeID", "TripID", "Date", "TimeBegin", "RiverMile", "DepthTotal", "DepthSample",
               "DepthIntegrated", "TimeDay", "Volume")
 
 samp = dat$Samples
@@ -50,9 +51,11 @@ ltl.spec = spec[which(spec$SpeciesID %in% taxa),]
 
 tmp.dat = left_join(ltl.spec, ltl.samp, by = "BarcodeID")
 
-no.dat = tmp.dat[,c(1,24:31,2:23)]
+no.dat = tmp.dat[,c(1,24:32,2:23)]
 
-rm(list=setdiff(ls(), "no.dat"))
+no.dat$SpeciesID = as.character(no.dat$SpeciesID)
+
+rm(list = setdiff(ls(), "no.dat"))
 
 #-----------------------------------------------------------------------------#
 #-----------------------------------------------------------------------------#
